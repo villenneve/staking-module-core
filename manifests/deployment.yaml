@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staking-core
+  namespace: codefresh
+  labels:
+    app: staking-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: staking-core
+  template:
+    metadata:
+      labels:
+        app: staking-core
+    spec:
+      containers:
+        - name: staking-core
+          image: ghcr.io/villenneve/staking-module-core:latest
+          ports:
+            - containerPort: 8080
