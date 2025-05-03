@@ -1,22 +1,11 @@
-# Etapa 1: builder
-FROM rust:latest AS builder
-
-WORKDIR /app
-
-# Copia o código-fonte e dependências
-COPY . .
-
-# Compila o binário em modo release
-RUN cargo build --release
-
-# Etapa 2: imagem final mínima
+# Etapa final mínima
 FROM debian:buster-slim
 
-# Copia o binário compilado
-COPY --from=builder /app/target/release/staking-module-core /usr/local/bin/staking-core
+# Copia o binário compilado com MUSL
+COPY target/x86_64-unknown-linux-musl/release/staking-module-core /usr/local/bin/staking-core
 
-# Porta padrão
+# Define a porta padrão (caso seu app use)
 EXPOSE 8080
 
-# Comando para iniciar a aplicação
+# Comando de execução
 CMD ["staking-core"]

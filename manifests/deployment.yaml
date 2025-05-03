@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: staking-core
-          image: ghcr.io/villenneve/staking-module-core:latest
+          image: villenneve/staking-core:musl
           ports:
             - containerPort: 8080
