@@ -19,24 +19,21 @@ mod health;
 /// Entry point for the Staking Core Service
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // Load environment variables
     dotenv().ok();
     env_logger::init();
     info!("📌 Environment variables loaded successfully.");
 
-    // Connect to MongoDB
     let db = connect_db().await;
     info!("✅ Connected to MongoDB.");
 
-    // Connect to Redis
     let redis = RedisClient::new().await;
     info!("✅ Connected to Redis.");
 
-    // Get server address from environment or fallback to default
-    let server_address = std::env::var("SERVER_ADDRESS").unwrap_or_else(|_| "0.0.0.0:4000".to_string());
+    // Cloud Run exige PORT como variável de ambiente
+    let port = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string());
+    let server_address = format!("0.0.0.0:{}", port);
     info!("🚀 Staking Core running at {}", server_address);
 
-    // Start HTTP server
     HttpServer::new(move || {
         info!("📌 Loading routes...");
         App::new()
@@ -48,3 +45,4 @@ async fn main() -> std::io::Result<()> {
     .run()
     .await
 }
+
