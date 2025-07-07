@@ -1,5 +1,5 @@
 # Etapa 1: Build com imagem oficial do Rust
-FROM rust:latest
+FROM rust:latest AS builder
 
 # Crie diretório para o projeto
 WORKDIR /usr/src/app
